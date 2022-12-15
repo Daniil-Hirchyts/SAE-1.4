@@ -26,16 +26,17 @@ CREATE TABLE Villes
 CREATE TABLE Competiteurs
 (
     num_competiteur  INTEGER      NOT NULL,
-    nom              VARCHAR(255) NOT NULL,
-    prenom           VARCHAR(255) NOT NULL,
-    date_inscription DATE         NOT NULL,
+    nom              VARCHAR(40)  NOT NULL,
+    prenom           VARCHAR(40)  NOT NULL,
+    date_inscription DATE         DEFAULT CURRENT_DATE,
     date_naissance   DATE         NOT NULL,
-    pays_origine     VARCHAR(255) NOT NULL,
-    rang             INTEGER      NOT NULL,
-    ville            VARCHAR(255) NOT NULL,
+    pays_origine     VARCHAR(40),
+    rang             VARCHAR(50),
+    ville            VARCHAR(50),
     CONSTRAINT pk_num_competiteur PRIMARY KEY (num_competiteur),
     CONSTRAINT fk_ville FOREIGN KEY (ville) REFERENCES Villes (nom_ville),
-    CONSTRAINT date_naissance CHECK (date_inscription > date_naissance)
+    CONSTRAINT date_naissance CHECK (date_inscription > date_naissance),
+    CONSTRAINT date_inscription CHECK (date_e<date_inscription),
 );
 
 CREATE TABLE Stades
