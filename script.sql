@@ -138,8 +138,8 @@ INSERT INTO Competiteurs (num_competiteur, nom, prenom, date_inscription, date_n
 VALUES (1, 'Djokovic', 'Novak', TO_DATE('2020-02-01', 'YYYY-MM-DD'), TO_DATE('1981-05-22', 'YYYY-MM-DD'), 'Serbie',
         'Londres');
 INSERT INTO Competiteurs
-VALUES (2, 'Babage', 'Lambargamber', TO_DATE('2020-01-01', 'YYYY-MM-DD'), TO_DATE('1987-05-22', 'YYYY-MM-DD'), 'Serbie',
-        'Londres');
+VALUES (2, 'Dupont', 'Lambargamber', TO_DATE('2020-01-01', 'YYYY-MM-DD'), TO_DATE('1987-05-22', 'YYYY-MM-DD'), 'Serbie',
+        'Paris');
 INSERT INTO Competiteurs
 VALUES (3, 'Federer', 'Roger', TO_DATE('2020-01-01', 'YYYY-MM-DD'), TO_DATE('1981-08-08', 'YYYY-MM-DD'), 'Suisse',
         'New York');
@@ -222,16 +222,19 @@ VALUES (4, 'Football', 'Professionnel', TO_DATE('2020-09-18 22:40:00', 'YYYY-MM-
 INSERT INTO Epreuves
 VALUES (5, 'Natation', 'Intermédiaire', TO_DATE('2021-11-14 23:30:00', 'YYYY-MM-DD HH24:MI:SS'), 3);
 INSERT INTO Epreuves
-VALUES (6, 'Natation', 'Débutant', TO_DATE('2022-05-05 23:55:00', 'YYYY-MM-DD HH24:MI:SS'), 3);
+VALUES (6, 'Natation', 'Débutant', TO_DATE('2022-01-16 23:55:00', 'YYYY-MM-DD HH24:MI:SS'), 3);
 INSERT INTO Epreuves
 VALUES (7, 'Athlétisme', 'Intermédiaire', TO_DATE('2012-12-30 10:50:00', 'YYYY-MM-DD HH24:MI:SS'), 4);
 INSERT INTO Epreuves
-VALUES (8, 'Athlétisme', 'Professionnel', TO_DATE('2024-10-15 10:43:00', 'YYYY-MM-DD HH24:MI:SS'), 4);
+VALUES (8, 'Athlétisme', 'Professionnel', TO_DATE('2022-12-16 10:43:00', 'YYYY-MM-DD HH24:MI:SS'), 4);
 INSERT INTO Epreuves
 VALUES (9, 'Escrime', 'Intermédiaire', TO_DATE('2022-07-01 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), 10);
 INSERT INTO Epreuves
-VALUES (10, 'Escrime', 'Professionnel', TO_DATE('2023-05-08 10:30:00', 'YYYY-MM-DD HH24:MI:SS'), 10);
-
+VALUES (10, 'Escrime', 'Professionnel', TO_DATE('2022-05-08 10:30:00', 'YYYY-MM-DD HH24:MI:SS'), 10);
+INSERT INTO Epreuves
+VALUES (11, 'Volley-ball', 'Intermédiaire', TO_DATE('2022-06-08 17:30:00', 'YYYY-MM-DD HH24:MI:SS'), 10);
+INSERT INTO Epreuves
+VALUES (12, 'Volley-ball', 'Professionnel', TO_DATE('2018-09-26 21:20:00', 'YYYY-MM-DD HH24:MI:SS'), 3);
 -- INSERT INTO Place
 INSERT INTO Place (num_visiteur, num_stade, num_place, prix_place, date_achat)
 VALUES (1, 1, 1, 50.0, TO_DATE('2020-01-01', 'YYYY-MM-DD'));
@@ -275,6 +278,10 @@ INSERT INTO Participe
 VALUES (9, 9);
 INSERT INTO Participe
 VALUES (10, 10);
+INSERT INTO Participe
+VALUES (10, 11);
+INSERT INTO Participe
+VALUES (3, 12);
 
 -- INSERT INTO Recompense
 INSERT INTO Recompense (num_competiteur, num_epreuve, rang)
@@ -297,7 +304,10 @@ INSERT INTO Recompense
 VALUES (9, 9, 'Or');
 INSERT INTO Recompense
 VALUES (10, 10, 'Or');
-
+INSERT INTO Recompense
+VALUES (10, 11, 'Or');
+INSERT INTO Recompense
+VALUES (3, 12, 'Or');
 --||||||||||||||||||||||||||||||||||||||||||||--
 ------------Manipulations de données------------
 --||||||||||||||||||||||||||||||||||||||||||||--
