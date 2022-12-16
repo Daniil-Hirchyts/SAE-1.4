@@ -284,7 +284,7 @@ VALUES (2, 2, 'Or');
 INSERT INTO Recompense
 VALUES (3, 8, 'Bronze');
 INSERT INTO Recompense
-VALUES (10, 10, 'Or');
+VALUES (10, 5, 'Or');
 INSERT INTO Recompense
 VALUES (5, 6, 'Argent');
 INSERT INTO Recompense
