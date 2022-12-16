@@ -17,9 +17,12 @@ DROP TABLE Villes;
 
 CREATE TABLE Villes
 (
-    nom_ville VARCHAR(255) NOT NULL,
-    adresse   VARCHAR(255) NOT NULL,
-    CONSTRAINT pk_nom_ville PRIMARY KEY (nom_ville)
+    nom_ville   VARCHAR(255) NOT NULL,
+    num_depart  INTEGER      NOT NULL,
+    nb_habitant INTEGER      NOT NULL,
+    CONSTRAINT pk_nom_ville PRIMARY KEY (nom_ville),
+    CONSTRAINT nb_habitant CHECK (nb_habitant > 0),
+    CONSTRAINT num_depart CHECK (0 < num_depart AND num_depart < 990)
 );
 
 CREATE TABLE Stades
@@ -55,10 +58,9 @@ CREATE TABLE Competiteurs
     date_inscription DATE         DEFAULT CURRENT_DATE,
     date_naissance   DATE         NOT NULL,
     pays_origine     VARCHAR(255) NOT NULL,
-    rang             INTEGER      NOT NULL,
-    ville            VARCHAR(255) NOT NULL,
+    nom_ville        VARCHAR(255) NOT NULL,
     CONSTRAINT pk_num_competiteur PRIMARY KEY (num_competiteur),
-    CONSTRAINT fk_ville FOREIGN KEY (ville) REFERENCES Villes (nom_ville),
+    CONSTRAINT fk_ville FOREIGN KEY (nom_ville) REFERENCES Villes (nom_ville),
     CONSTRAINT date_naissance CHECK (date_inscription > date_naissance)
 );
 
@@ -67,23 +69,12 @@ CREATE TABLE Visiteurs
     num_visiteur INTEGER      NOT NULL,
     nom          VARCHAR(255) NOT NULL,
     prenom       VARCHAR(255) NOT NULL,
-    place_achete INTEGER      NOT NULL,
     ville        VARCHAR(255) NOT NULL,
     CONSTRAINT pk_num_visiteur_v PRIMARY KEY (num_visiteur),
-    CONSTRAINT fk_ville_v FOREIGN KEY (ville) REFERENCES Villes (nom_ville),
-    CONSTRAINT place_achete CHECK (place_achete > 0)
+    CONSTRAINT fk_ville_v FOREIGN KEY (ville) REFERENCES Villes (nom_ville)
 );
 
-CREATE TABLE Epreuves
-(
-    num_epreuve INTEGER      NOT NULL,
-    sport       VARCHAR(255) NOT NULL,
-    cat_e       VARCHAR(255) NOT NULL,
-    date_e      DATE         NOT NULL,
-    stade       INTEGER      NOT NULL,
-    CONSTRAINT pk_num_epreuve PRIMARY KEY (num_epreuve),
-    CONSTRAINT fk_stade FOREIGN KEY (stade) REFERENCES Stades (num_stade)
-);
+
 
 CREATE TABLE Place
 (
@@ -94,16 +85,18 @@ CREATE TABLE Place
     date_achat   DATE             NOT NULL,
     CONSTRAINT fk_num_visiteur FOREIGN KEY (num_visiteur) REFERENCES Visiteurs (num_visiteur),
     CONSTRAINT fk_num_stade FOREIGN KEY (num_stade) REFERENCES Stades (num_stade),
-    CONSTRAINT prix_place CHECK (prix_place > 0.0)
+    CONSTRAINT prix_place CHECK (prix_place > 0.0),
+    CONSTRAINT num_place CHECK (num_place > 0)
 );
 
 CREATE TABLE Recompense
 (
     num_competiteur INTEGER     NOT NULL,
     num_epreuve     INTEGER     NOT NULL,
-    Rang            VARCHAR(10) NOT NULL,
+    rang            VARCHAR(10) NOT NULL,
     CONSTRAINT fk_num_competiteur FOREIGN KEY (num_competiteur) REFERENCES Competiteurs (num_competiteur),
-    CONSTRAINT fk_num_epreuve FOREIGN KEY (num_epreuve) REFERENCES Epreuves (num_epreuve)
+    CONSTRAINT fk_num_epreuve FOREIGN KEY (num_epreuve) REFERENCES Epreuves (num_epreuve),
+    CONSTRAINT rang CHECK (rang = 'Or' OR rang = 'Argent' OR rang = 'Bronze')
 );
 
 CREATE TABLE Participe
@@ -119,24 +112,24 @@ CREATE TABLE Participe
 --||||||||||||||||||||||||||||||||||||||||||||--
 
 -- INSERT INTO Villes
-INSERT INTO Villes (nom_ville, adresse)
-VALUES ('Paris', '1 Place Charles de Gaulle, 75008 Paris');
+INSERT INTO Villes (nom_ville, num_depart, nb_habitant)
+VALUES ('Paris', 75, 1500);
 INSERT INTO Villes
-VALUES ('Londres', 'Westminster, Londres SW1A 0AA, Royaume-Uni');
+VALUES ('Londres', 702, 120);
 INSERT INTO Villes
-VALUES ('New York', '1 Wall Street, New York, NY 10005, États-Unis');
+VALUES ('New York', 384, 4122);
 INSERT INTO Villes
-VALUES ('Tokyo', '1 Chome-1-1 Otemachi, Chiyoda City, Tokyo 100-0004, Japon');
+VALUES ('Tokyo', 659, 3423);
 INSERT INTO Villes
-VALUES ('Sydney', 'Sydney NSW 2000, Australie');
+VALUES ('Sydney', 304, 10);
 INSERT INTO Villes
 VALUES ('Rio de Janeiro', 213, 1234);
 INSERT INTO Villes
 VALUES ('Cape Town', 552, 12214);
 INSERT INTO Villes
-VALUES ('Moscou', 'Moscou, Russie');
+VALUES ('Moscou', 405, 1500);
 INSERT INTO Villes
-VALUES ('Pékin', 'Pékin, Chine');
+VALUES ('Pékin', 342, 3332);
 INSERT INTO Villes
 VALUES ('Mexico', 213, 2312);
 
@@ -217,27 +210,27 @@ VALUES (9, 'Williams', 'Samantha', 'Sydney');
 INSERT INTO Visiteurs
 VALUES (10, 'Jones', 'Michael', 'Sydney');
 
--- INSERT INTO Epreuves
-INSERT INTO Epreuves (num_epreuve, sport, cat_e, date_e, stade)
-VALUES (1, 'Tennis', 'Hommes', TO_DATE('2021-06-02 15:30:00', 'YYYY-MM-DD HH24:MI:SS'), 1);
+-- INSERT INTO Épreuves
+INSERT INTO Epreuves (num_epreuve, sport, cat_e, date_e, num_stade)
+VALUES (1, 'Tennis', 'Débutant', TO_DATE('2021-06-02 15:30:00', 'YYYY-MM-DD HH24:MI:SS'), 1);
 INSERT INTO Epreuves
-VALUES (2, 'Tennis', 'Femmes', TO_DATE('2015-08-04 10:10:00', 'YYYY-MM-DD HH24:MI:SS'), 1);
+VALUES (2, 'Tennis', 'Débutant', TO_DATE('2015-08-04 10:10:00', 'YYYY-MM-DD HH24:MI:SS'), 1);
 INSERT INTO Epreuves
-VALUES (3, 'Football', 'Hommes', TO_DATE('2018-04-10 21:20:00', 'YYYY-MM-DD HH24:MI:SS'), 2);
+VALUES (3, 'Football', 'Professionnel', TO_DATE('2018-04-10 21:20:00', 'YYYY-MM-DD HH24:MI:SS'), 2);
 INSERT INTO Epreuves
-VALUES (4, 'Football', 'Femmes', TO_DATE('2020-09-18 22:40:00', 'YYYY-MM-DD HH24:MI:SS'), 2);
+VALUES (4, 'Football', 'Professionnel', TO_DATE('2020-09-18 22:40:00', 'YYYY-MM-DD HH24:MI:SS'), 2);
 INSERT INTO Epreuves
-VALUES (5, 'Natation', 'Hommes', TO_DATE('2021-11-14 23:30:00', 'YYYY-MM-DD HH24:MI:SS'), 3);
+VALUES (5, 'Natation', 'Intermédiaire', TO_DATE('2021-11-14 23:30:00', 'YYYY-MM-DD HH24:MI:SS'), 3);
 INSERT INTO Epreuves
-VALUES (6, 'Natation', 'Femmes', TO_DATE('2022-05-05 23:55:00', 'YYYY-MM-DD HH24:MI:SS'), 3);
+VALUES (6, 'Natation', 'Débutant', TO_DATE('2022-05-05 23:55:00', 'YYYY-MM-DD HH24:MI:SS'), 3);
 INSERT INTO Epreuves
-VALUES (7, 'Athlétisme', 'Hommes', TO_DATE('2012-12-30 10:50:00', 'YYYY-MM-DD HH24:MI:SS'), 4);
+VALUES (7, 'Athlétisme', 'Intermédiaire', TO_DATE('2012-12-30 10:50:00', 'YYYY-MM-DD HH24:MI:SS'), 4);
 INSERT INTO Epreuves
-VALUES (8, 'Athlétisme', 'Femmes', TO_DATE('2024-10-15 10:43:00', 'YYYY-MM-DD HH24:MI:SS'), 4);
+VALUES (8, 'Athlétisme', 'Professionnel', TO_DATE('2024-10-15 10:43:00', 'YYYY-MM-DD HH24:MI:SS'), 4);
 INSERT INTO Epreuves
-VALUES (9, 'Escrime', 'Hommes', TO_DATE('2022-07-01 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), 5);
+VALUES (9, 'Escrime', 'Intermédiaire', TO_DATE('2022-07-01 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), 5);
 INSERT INTO Epreuves
-VALUES (10, 'Escrime', 'Femmes', TO_DATE('2023-05-08 10:30:00', 'YYYY-MM-DD HH24:MI:SS'), 5);
+VALUES (10, 'Escrime', 'Professionnel', TO_DATE('2023-05-08 10:30:00', 'YYYY-MM-DD HH24:MI:SS'), 5);
 
 -- INSERT INTO Place
 INSERT INTO Place (num_visiteur, num_stade, num_place, prix_place, date_achat)
@@ -265,15 +258,15 @@ VALUES (10, 1, 10, 50.0, TO_DATE('202-01-01', 'YYYY-MM-DD'));
 INSERT INTO Participe (num_competiteur, num_epreuve)
 VALUES (1, 1);
 INSERT INTO Participe
-VALUES (2, 1);
+VALUES (2, 2);
 INSERT INTO Participe
-VALUES (3, 1);
+VALUES (3, 8);
 INSERT INTO Participe
-VALUES (4, 1);
+VALUES (2, 4);
 INSERT INTO Participe
-VALUES (5, 1);
+VALUES (5, 6);
 INSERT INTO Participe
-VALUES (6, 1);
+VALUES (6, 2);
 INSERT INTO Participe
 VALUES (7, 4);
 INSERT INTO Participe
@@ -284,12 +277,12 @@ INSERT INTO Participe
 VALUES (10, 8);
 
 -- INSERT INTO Recompense
-INSERT INTO Recompense (num_competiteur, num_epreuve, Rang)
-VALUES (1, 1, 'Gold');
+INSERT INTO Recompense (num_competiteur, num_epreuve, rang)
+VALUES (1, 1, 'Argent');
 INSERT INTO Recompense
 VALUES (2, 2, 'Or');
 INSERT INTO Recompense
-VALUES (3, 1, 'Bronze');
+VALUES (3, 8, 'Bronze');
 INSERT INTO Recompense
 VALUES (2, 4, 'Or');
 INSERT INTO Recompense
@@ -311,8 +304,8 @@ VALUES (10, 8, 'Or');
 
 --|||||| Ville :
 --      CONSTRAINT pk_nom_ville PRIMARY KEY (nom_ville)
-INSERT INTO Villes (nom_ville, adresse)
-VALUES ('', '1 rue de la ville');
+INSERT INTO Villes (nom_ville, num_depart, nb_habitant)
+VALUES ('', '451', 23);
 -- Cette insertion échouerait en raison de la contrainte NOT NULL sur la colonne nom_ville, qui spécifie que la colonne ne peut pas contenir de valeurs NULL.
 
 
@@ -326,7 +319,7 @@ WHERE nom = 'John Doe';
 
 --     CONSTRAINT fk_ville FOREIGN KEY (ville) REFERENCES Villes (nom_ville)
 INSERT INTO Competiteurs
-VALUES (1, 'Doe', 'John', '2022-12-14', '2000-12-15', 'France', 1, 'Miami')
+VALUES (1, 'Doe', 'John', '14-12-2022', '15-12-2000', 'France', 'Miami')
 -- Cette insertion échouera car elle tente d'insérer une valeur qui n'existe pas dans la colonne nom_ville, qui est définie comme une clé étrangère.
 
 --     CONSTRAINT date_naissance CHECK (date_inscription > date_naissance)
@@ -335,7 +328,7 @@ INTO Competiteurs (num_competiteur, nom, prenom, date_inscription, date_naissanc
 VALUES (1, 'Doe', 'John', '12-03-2022', '12-04-2022', 'France', 'Paris');
 --La raison de l'échec de cette insertion serait que la date de naissance de John Doe est postérieure à sa date d'inscription, ce qui va à l'encontre de la contrainte de domaine sur la date de naissance des compétiteurs.
 
-
+--TODO: En-bas
 --|||||| Stades :
 --     CONSTRAINT pk_num_stade PRIMARY KEY (num_stade)
 INSERT INTO Stades (num_stade, nom, adresse, capacite, ville)
