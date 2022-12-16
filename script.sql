@@ -228,9 +228,9 @@ VALUES (7, 'Athlétisme', 'Intermédiaire', TO_DATE('2012-12-30 10:50:00', 'YYYY
 INSERT INTO Epreuves
 VALUES (8, 'Athlétisme', 'Professionnel', TO_DATE('2024-10-15 10:43:00', 'YYYY-MM-DD HH24:MI:SS'), 4);
 INSERT INTO Epreuves
-VALUES (9, 'Escrime', 'Intermédiaire', TO_DATE('2022-07-01 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), 5);
+VALUES (9, 'Escrime', 'Intermédiaire', TO_DATE('2022-07-01 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), 10);
 INSERT INTO Epreuves
-VALUES (10, 'Escrime', 'Professionnel', TO_DATE('2023-05-08 10:30:00', 'YYYY-MM-DD HH24:MI:SS'), 5);
+VALUES (10, 'Escrime', 'Professionnel', TO_DATE('2023-05-08 10:30:00', 'YYYY-MM-DD HH24:MI:SS'), 10);
 
 -- INSERT INTO Place
 INSERT INTO Place (num_visiteur, num_stade, num_place, prix_place, date_achat)
@@ -272,9 +272,9 @@ VALUES (7, 4);
 INSERT INTO Participe
 VALUES (8, 1);
 INSERT INTO Participe
-VALUES (9, 4);
+VALUES (9, 9);
 INSERT INTO Participe
-VALUES (10, 8);
+VALUES (10, 10);
 
 -- INSERT INTO Recompense
 INSERT INTO Recompense (num_competiteur, num_epreuve, rang)
@@ -284,7 +284,7 @@ VALUES (2, 2, 'Or');
 INSERT INTO Recompense
 VALUES (3, 8, 'Bronze');
 INSERT INTO Recompense
-VALUES (2, 4, 'Or');
+VALUES (10, 10, 'Or');
 INSERT INTO Recompense
 VALUES (5, 6, 'Argent');
 INSERT INTO Recompense
@@ -294,9 +294,9 @@ VALUES (7, 4, 'Argent');
 INSERT INTO Recompense
 VALUES (8, 1, 'Argent');
 INSERT INTO Recompense
-VALUES (9, 4, 'Argent');
+VALUES (9, 9, 'Or');
 INSERT INTO Recompense
-VALUES (10, 8, 'Or');
+VALUES (10, 10, 'Or');
 
 --||||||||||||||||||||||||||||||||||||||||||||--
 ------------Manipulations de données------------
@@ -370,7 +370,7 @@ INTO Visiteurs VALUES (1, 'John', 'Doe', 0, 'New York')
 --     CONSTRAINT pk_num_epreuve PRIMARY KEY (num_epreuve),
 INSERT
 INTO Epreuves
-VALUES (-1, 'Epreuve 1', '2022-12-14', '12:00:00', 1)
+VALUES (-1, 'Epreuve 1', '2022-12-12', '12:01:01', 1)
 -- Cette insertion échouera car elle tente d'insérer une valeur qui existe deja dans la colonne num_epreuve, qui est définie comme une clé étrangère.
 
 --     CONSTRAINT fk_stade FOREIGN KEY (stade) REFERENCES Stades (num_stade)
