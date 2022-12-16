@@ -17,6 +17,7 @@ ON c.num_competiteur = r.num_competiteur
 WHERE r.rang = 'Argent'
 AND c.nom_ville = c.pays_origine
 
+
 --R3
 Select num_competiteur
 FROM (Select num_competiteur, COUNT(r.num_epreuve) as nbEpreuve FROM (Select num_epreuve FROM Epreuves WHERE cat_e = 'Professionnel') e
