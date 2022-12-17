@@ -312,20 +312,29 @@ VALUES (3, 12, 'Or');
 ------------Manipulations de données------------
 --||||||||||||||||||||||||||||||||||||||||||||--
 
---|||||| Ville :
---      CONSTRAINT pk_nom_ville PRIMARY KEY (nom_ville)
+--|||||| Ville : DONE
+--      CONSTRAINT pk_nom_ville PRIMARY KEY (nom_ville) DONE !
 INSERT INTO Villes (nom_ville, num_depart, nb_habitant)
 VALUES ('', '451', 23);
 -- Cette insertion échouerait en raison de la contrainte NOT NULL sur la colonne nom_ville, qui spécifie que la colonne ne peut pas contenir de valeurs NULL.
 
+--      CONSTRAINT fk_num_depart FOREIGN KEY (num_depart) REFERENCES Departements(num_depart) DONE !
+INSERT INTO Villes (nom_ville, num_depart, nb_habitant)
+VALUES ('Paris', '451', 23);
+-- Cette insertion échouerait en raison de la contrainte FOREIGN KEY sur la colonne num_depart, qui spécifie que la colonne ne peut contenir que des valeurs qui correspondent à une valeur de la colonne num_depart de la table Departements.
 
---|||||| Competiteurs :
+--      CONSTRAINT ck_nb_habitant CHECK (nb_habitant > 0) DONE !
+INSERT INTO Villes (nom_ville, num_depart, nb_habitant)
+VALUES ('Paris', '451', -23);
+-- Cette insertion échouerait en raison de la contrainte CHECK sur la colonne nb_habitant, qui spécifie que la colonne ne peut contenir que des valeurs positives.
+
+--|||||| Competiteurs : DONE
 
 --     CONSTRAINT pk_num_competiteur PRIMARY KEY (num_competiteur)
-UPDATE Competiteurs
-SET num_competiteur = 1
-WHERE nom = 'John Doe';
--- Cette mise à jour échouerait en raison de la contrainte PRIMARY KEY sur la colonne num_competiteur, qui spécifie que chaque valeur dans la colonne doit être unique.
+INSERT INTO Competiteurs (num_competiteur, nom_competiteur, prenom_competiteur, sexe_competiteur, date_naissance, num_ville)
+VALUES (1, 'DUPONT', 'Jean', 'M', TO_DATE('1990-01-01', 'YYYY-MM-DD'), '451');
+-- Cette insertion échouerait en raison de la contrainte NOT NULL sur la colonne num_competiteur, qui spécifie que la colonne ne peut pas contenir de valeurs NULL.
+
 
 --     CONSTRAINT fk_ville FOREIGN KEY (ville) REFERENCES Villes (nom_ville)
 INSERT INTO Competiteurs
@@ -338,8 +347,7 @@ INTO Competiteurs (num_competiteur, nom, prenom, date_inscription, date_naissanc
 VALUES (1, 'Doe', 'John', '12-03-2022', '12-04-2022', 'France', 'Paris');
 --La raison de l'échec de cette insertion serait que la date de naissance de John Doe est postérieure à sa date d'inscription, ce qui va à l'encontre de la contrainte de domaine sur la date de naissance des compétiteurs.
 
---TODO: En-bas
---|||||| Stades :
+--|||||| Stades : DONE
 --     CONSTRAINT pk_num_stade PRIMARY KEY (num_stade)
 INSERT INTO Stades (num_stade, nom, adresse, capacite, ville)
 VALUES (1, 'Stade de France', '24 rue du Commandant Guilbaud', 80000, 'Paris');
@@ -357,7 +365,7 @@ VALUES (1, 'Stade 1', 'Adresse 1', -10, 'Ville 1');
 -- La valeur de la colonne "capacite" est inférieure à 0, ce qui violerait la contrainte de domaine "capacite > 0" définie pour cette colonne dans la table Stades.
 
 
---|||||| Visiteurs :
+--|||||| Visiteurs : DONE
 --     CONSTRAINT pk_num_visiteur_v PRIMARY KEY (num_visiteur),
 DELETE
 FROM Visiteurs
@@ -369,12 +377,6 @@ INSERT
 INTO Visiteurs
 VALUES (1, 'John', 'Adresse 1', 1, 'Miami')
 -- Cette insertion échouera car elle tente d'insérer une valeur qui n'existe pas dans la colonne nom_ville, qui est définie comme une clé étrangère.
-
---     CONSTRAINT place_achete CHECK (place_achete > 0)
-INSERT
-INTO Visiteurs VALUES (1, 'John', 'Doe', 0, 'New York')
---Cette insertion échouerait car la valeur de "place_achete" est 0, ce qui est inférieur à la valeur minimale autorisée par la contrainte de vérification "place_achete> 0" définie pour cette colonne dans la table Visiteurs.
-
 
 --|||||| Epreuves :
 --     CONSTRAINT pk_num_epreuve PRIMARY KEY (num_epreuve),

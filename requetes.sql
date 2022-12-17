@@ -1,4 +1,4 @@
---R1 Combien de compétiteurs ont reçu au moins deux médailles d'or dans le stade avec la plus grande capacité d'accueil ?
+--R1 DONE
 SELECT COUNT(num_competiteur) as nbCompetiteur FROM(SELECT num_competiteur, COUNT(rang) AS nbRang
  FROM (SELECT *
              FROM Epreuves e JOIN Recompense r ON e.num_Epreuve = r.num_Epreuve
@@ -9,7 +9,7 @@ SELECT COUNT(num_competiteur) as nbCompetiteur FROM(SELECT num_competiteur, COUN
              )
  WHERE rang ='Or'
  GROUP BY num_competiteur) WHERE nbRang >= 2
---R2 DONE
+--R2 DONE ajouter des insert pour cette requête
          SELECT nom, prenom, date_naissance
 FROM Competiteurs c
 JOIN Recompense r
@@ -18,7 +18,7 @@ WHERE r.rang = 'Argent'
 AND c.nom_ville = c.pays_origine
 
 
---R3
+--R3 DONE
 Select num_competiteur
 FROM (Select num_competiteur, COUNT(r.num_epreuve) as nbEpreuve FROM (Select num_epreuve FROM Epreuves WHERE cat_e = 'Professionnel') e
     JOIN Recompense r ON r.num_epreuve=e.num_epreuve
@@ -27,7 +27,7 @@ WHERE nbEpreuve >= 2
 --R4
 
 
---R5
+--R5 DONE
 Select v.num_visiteur, v.nom, v.prenom, v.ville
 FROM Visiteurs v JOIN Place p ON v.num_visiteur = p.num_visiteur
     JOIN stades s ON s.num_stade = p.num_stade
