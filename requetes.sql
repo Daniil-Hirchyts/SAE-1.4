@@ -24,7 +24,21 @@ FROM (Select num_competiteur, COUNT(r.num_epreuve) as nbEpreuve FROM (Select num
     JOIN Recompense r ON r.num_epreuve=e.num_epreuve
     GROUP BY num_competiteur)
 WHERE nbEpreuve >= 2
---R4
+--R4 A VERIFIER
+
+SELECT nom FROM (Select v.nom,COUNT(v.nom) AS nbE 
+FROM villes v1 JOIN visiteurs v ON v1.nom_ville=v.ville JOIN Place p ON v.num_visiteur = p.num_visiteur
+    JOIN stades s ON s.num_stade = p.num_stade
+    JOIN Epreuves e ON s.num_stade=e.num_stade
+    JOIN participe p1 ON p1.num_epreuve=e.num_epreuve
+    JOIN competiteurs c ON c.num_competiteur = p1.num_competiteur
+WHERE v1.nom_ville=c.nom_ville
+GROUP BY v.nom)
+
+WHERE nbE=(SELECT COUNT(DISTINCT v.nom)
+FROM visiteurs v JOIN Place p ON v.num_visiteur = p.num_visiteur
+    JOIN stades s ON s.num_stade = p.num_stade
+    JOIN villes v2 ON s.ville=v2.nom_ville)
 
 
 --R5 DONE
